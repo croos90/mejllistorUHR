@@ -73,6 +73,8 @@ def main(file):
                 ws2.cell(row=ws2_row,column=1,value=email)
                 ws2_row += 1
             elif code == 2:
+                if val == '':
+                    continue
                 cell = ws1.cell(row=ws1_row,column=1)
                 cell.value = email
                 cell.fill = PatternFill("solid", fgColor="00FFCC00")
