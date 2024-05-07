@@ -9,8 +9,8 @@ import sys
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 # Patterns that suggest an OCR error
-common_err = [r'[a-zA-Z._-]1[a-zA-Z@._-]', r'[0-9]l[0-9@]', 
-              r'[a-zA-Z]11', "O", "S", "maii", "1lr", "lr1"]
+common_err = [r'[a-zA-Z._-]1[a-zA-Z@._-]', r'[0-9]l[0-9@]', r'[a-zA-Z]0[a-zA-Z]',
+              r'[a-zA-Z]11', r'0[a-zA-Z]',"O", "S", "maii", "1lr", "lr1"]
 
 # Globals to keep track
 autocorrected = 0
@@ -88,7 +88,7 @@ def main(file):
     write_results(ws0,ws1,ws2,max_row,autocorrected,deleted,regex_errors)
 
     # Save workbook
-    wb.save('mejllista_autofix.xlsx')
+    wb.save(file[:-4] + '_cleaned.xlsx')
 
     end = time.time()
     duration = end - start
