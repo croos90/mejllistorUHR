@@ -9,11 +9,10 @@ python3 mejllistorUHR_txt.py <namn>.txt
 ```
 
 Programmet raderar själv alla mellanslag och blanka rader, samt självrättar en del uppenbara OCR fel som exempelvis:
-
-".eom" till ".com"
-"maiLcom" till "mail.com"
-"autlaak" till "outlook"
-etc.
+- ".eom" till ".com"
+- "maiLcom" till "mail.com"
+- "autlaak" till "outlook"
+- etc.
 
 Adresser som har ett inkorrekt format markeras med orange färg. Detta kan vara otillåtna tecken eller konstiga radbryt.
 
