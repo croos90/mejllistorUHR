@@ -16,7 +16,7 @@ Programmet raderar själv alla mellanslag och blanka rader, samt självrättar e
 
 Adresser som har ett inkorrekt format markeras med orange färg. Detta kan vara otillåtna tecken eller konstiga radbryt.
 
-Adresser med misstänkta OCR fel markeras med gult. Bland annat hamnar här
+Adresser med misstänkta OCR fel markeras med gult. Bland annat hamnar här adresser innehållandes
 - 'S' som ofta ska vara '5'
 - 'O' som ofta ska vara '0'
 -  olika fall där 'l' kan ha tolkats som '1' och tvärtom.
