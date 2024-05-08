@@ -15,12 +15,13 @@ common_err = [r'[a-zA-Z._-]1[a-zA-Z@._-]', r'[0-9]l[0-9@]', r'[a-zA-Z]0[a-zA-Z]'
 autocorrected = 0
 deleted = 0
 regex_errors = 0
+OCR_errors = 0
 correct = 0
 errors = []
 line = 0
 
 def main(file):
-    global line, autocorrected, regex_errors, correct, deleted
+    global line, autocorrected, regex_errors, correct, deleted, OCR_errors
     start = time.time()
 
     # Create new workbook for output
@@ -30,10 +31,8 @@ def main(file):
     ws0.column_dimensions['A'].width = 25
     ws1 = wb.create_sheet("Addresses")
     ws1.column_dimensions['A'].width = 45
-    ws2 = wb.create_sheet("Possible OCR-errors")
-    ws2.column_dimensions['A'].width = 45
 
-    ws1_row, ws2_row = 1,1
+    row = 1
 
     with open(file, 'rb') as infile:
         for l in infile.readlines():
@@ -49,8 +48,11 @@ def main(file):
                 deleted += 1
                 continue
 
-            # Get rid of "Sida ..."
+            # Get rid of "Sida ..." and "EPOSTADRESS"
             if re.search("Sida ", val):
+                deleted += 1
+                continue
+            if re.search("EPOSTADRESS", val):
                 deleted += 1
                 continue
 
@@ -66,24 +68,29 @@ def main(file):
 
             # Write adress to correct sheet, regex-errors colored
             if code == 0:
-                ws1.cell(row=ws1_row, column=1,value=email)
+                ws1.cell(row=row, column=1,value=email)
                 correct += 1
-                ws1_row += 1
             elif code == 1:
-                ws2.cell(row=ws2_row,column=1,value=email)
-                ws2_row += 1
+                cell = ws1.cell(row=row,column=1)
+                cell.value = email
+                cell.fill = PatternFill("solid", fgColor="00FFFF99")
+                OCR_errors += 1
+                ws1.cell(row=row, column=2,value="OCR")
             elif code == 2:
                 if val == '':
                     deleted += 1
                     continue
-                cell = ws1.cell(row=ws1_row,column=1)
+                cell = ws1.cell(row=row,column=1)
                 cell.value = email
                 cell.fill = PatternFill("solid", fgColor="00FFCC00")
                 regex_errors += 1
-                ws1_row += 1
+                ws1.cell(row=row, column=2,value="regex")
+
+            ws1.cell(row=row, column=3,value=row)
+            row += 1
     
     # Write results on first sheet
-    write_results(ws0,ws1,ws2,line,autocorrected,deleted,regex_errors)
+    write_results(ws0,line,autocorrected,deleted,regex_errors)
 
     # Save workbook
     wb.save(file[:-4] + '_cleaned.xlsx')
@@ -95,7 +102,7 @@ def main(file):
     print("Lines processed: ", line)
     print("Auto-corrected: ", autocorrected)
     print("Lines deleted: ", deleted)
-    print("Possible OCR errors: ", ws2.max_row)
+    print("Possible OCR errors: ", OCR_errors)
     print("Regex errors: ", regex_errors)
     print("Errors: ", errors)
 
@@ -122,6 +129,11 @@ def replace_obvious_OCR_errors(val):
     if re.search("gmaii",val):
         val = val.replace("gmaii", "gmail")
         corr += 1
+    
+    # Change 'grnail' to 'gmail'
+    if re.search("grnail",val):
+        val = val.replace("grnail","gmail")
+        corr += 1
 
     # Change 'hotmaii' to 'hotmail'
     if re.search("hotmaii", val):
@@ -132,27 +144,44 @@ def replace_obvious_OCR_errors(val):
     if re.search("1ive.se", val):
         val = val.replace("1ive.se", "live.se")
         corr += 1
-    
-    # # Change 'a1ex' to 'alex'
-    # if re.search("a1ex",val):
-    #     val = val.replace("a1ex","alex")
-    #     corr += 1
 
-    # # Correct abdu1la, abdul1a, abdu11a
-    # if re.search("abdul1a",val):
-    #     val = val.replace("abdul1a","abdulla")
-    #     corr+=1
-    # if re.search("abdu1la",val):
-    #     val = val.replace("abdu1la","abdulla")
-    #     corr+=1
-    # if re.search("abdu11a",val):
-    #     val = val.replace("abdu11a","abdulla")
-    #     corr+=1
+    # Change 'maiLcom' to 'mail.com'
+    if re.search("maiLcom",val):
+        val = val.replace("maiLcom","mail.com")
+        corr += 1
+
+    # Change 'mail.cam' to 'mail.com'
+    if re.search("mail.cam",val):
+        val = val.replace("mail.cam","mail.com")
+        corr += 1
     
-    # # Change 'a1bin' to 'albin'
-    # if re.search("a1bin",val):
-    #     val=val.replace("a1bin","albin")
-    #     corr+=1
+    # Fix misspellings of outlook due to 'o' being interpreted as 'a'
+    if re.search("autlaak",val):
+        val = val.replace("autlaak","outlook")
+        corr += 1
+    if re.search("autlaok",val):
+        val = val.replace("autlaok","outlook")
+        corr += 1
+    if re.search("autlook",val):
+        val = val.replace("autlook","outlook")
+        corr += 1
+    if re.search("autloak",val):
+        val = val.replace("autloak","outlook")
+        corr += 1
+    if re.search("outlaok",val):
+        val = val.replace("outlaok","outlook")
+        corr += 1
+    if re.search("outloak",val):
+        val = val.replace("outloak","outlook")
+        corr += 1
+    if re.search("outlaak",val):
+        val = val.replace("outlaok","outlook")
+        corr += 1
+
+    # Change 'hatmail' to 'hotmail'
+    if re.search("hatmail",val):
+        val = val.replace("hatmail","hotmail")
+        corr += 1
     
     return val, corr
 
@@ -176,7 +205,7 @@ def check(email):
         return(2,email)
 
 
-def write_results(ws0,ws1,ws2,max_row,autocorrected,deleted,regex_errors):
+def write_results(ws0,max_row,autocorrected,deleted,regex_errors):
     '''Writes results to excel'''
     ws0.cell(row=1,column=1,value="Results")
     ws0.cell(row=2,column=1,value="Processed lines")
@@ -186,7 +215,7 @@ def write_results(ws0,ws1,ws2,max_row,autocorrected,deleted,regex_errors):
     ws0.cell(row=4,column=1,value="Deleted:")
     ws0.cell(row=4,column=2,value=deleted)
     ws0.cell(row=5,column=1,value="Possible OCR-errors:")
-    ws0.cell(row=5,column=2,value=ws2.max_row)
+    ws0.cell(row=5,column=2,value=OCR_errors)
     ws0.cell(row=6,column=1,value="Regex-errors detected:")
     ws0.cell(row=6,column=2,value=regex_errors)
 
