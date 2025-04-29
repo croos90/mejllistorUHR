@@ -4,8 +4,9 @@ Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fe
 
 Exportera adresserna till textfil och kör i terminalen:
 
-1. Lägg Python-filen och textfilerna i samma mapp
-2. Öppna terminalen i denna mapp och skriv in följande (se till att ha Python installerat på datorn):
+1. Exportera adresserna till en textfil (text Tillgänglig)
+2. Lägg Python-filen och textfilerna i samma mapp
+3. Öppna terminalen i denna mapp och skriv in följande (se till att ha Python installerat på datorn):
 ```
 python3 mejllistorUHR_txt.py <namn>.txt
 ```
