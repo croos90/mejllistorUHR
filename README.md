@@ -1,6 +1,6 @@
 # mejllistorUHR
 
-Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fel som kan fixas manuellt. Spottar ut resultatet i en excel-fil för att enklare kunna hanteras. Du behöver ha **Python** installerat på datorn för att köra programmet.
+Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fel som kan fixas manuellt. Spottar ut resultatet i en excel-fil för att enklare kunna hanteras. Du behöver ha **Python** och paketet **openpyxl**installerat på datorn för att köra programmet.
 
 Instruktioner:
 1. Scanna ca 100 sidor i taget och kör OCR (kräver adobe)
