@@ -35,16 +35,16 @@ def main(file):
 
     row = 1
 
-    with open(file, 'rb') as infile:
+    with open(file, 'r',encoding='utf-8', errors='ignore') as infile:
         for l in infile.readlines():
-            val = l.decode('utf-8').strip()
+            val = l.strip()
             line += 1
 
             # Catch None values and possible errors
             if not isinstance(val,str):
-                if isinstance(val, None):
-                    deleted += 1
-                    continue
+                # if isinstance(val, None):
+                #     deleted += 1
+                #     continue
                 errors.append((line,val))
                 deleted += 1
                 continue
