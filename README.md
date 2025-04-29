@@ -2,11 +2,11 @@
 
 Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fel som kan fixas manuellt. Spottar ut resultatet i en excel-fil för att enklare kunna hanteras. Du behöver ha **Python** installerat på datorn för att köra programmet.
 
-Exportera adresserna till textfil och kör i terminalen:
-
-1. Exportera adresserna till en textfil (text Tillgänglig)
-2. Lägg Python-filen och textfilerna i samma mapp
-3. Öppna terminalen i denna mapp och skriv in följande (se till att ha Python installerat på datorn):
+Instruktioner:
+1. Scanna ca 100 sidor i taget och kör OCR (kräver adobe)
+2. Exportera OCR-filen till en textfil (text Tillgänglig)
+3. Lägg Python-filen och textfilerna i samma mapp
+4. Öppna terminalen i denna mapp och skriv in följande (se till att ha Python installerat på datorn):
 ```
 python3 mejllistorUHR_txt.py <namn>.txt
 ```
