@@ -1,9 +1,11 @@
 # mejllistorUHR
 
-Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fel som kan fixas manuellt. Spottar ut resultatet i en excel-fil för att enklare kunna hanteras.
+Tar en textfil med mejladresser och rättar enkla saker och markerar möjliga fel som kan fixas manuellt. Spottar ut resultatet i en excel-fil för att enklare kunna hanteras. Du behöver ha **Python** installerat på datorn för att köra programmet.
 
 Exportera adresserna till textfil och kör i terminalen:
 
+1. Lägg Python-filen och textfilerna i samma mapp
+2. Öppna terminalen i denna mapp och skriv in följande (se till att ha Python installerat på datorn):
 ```
 python3 mejllistorUHR_txt.py <namn>.txt
 ```
@@ -23,4 +25,4 @@ Adresser med misstänkta OCR fel markeras med gult. Bland annat hamnar här adre
 -  osv.
 
 
-https://github.com/croos90/mejllistorUHR
+Källkoden hittas här: https://github.com/croos90/mejllistorUHR
