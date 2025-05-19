@@ -25,5 +25,7 @@ Adresser med misstänkta OCR fel markeras med gult. Bland annat hamnar här adre
 -  olika fall där 'l' kan ha tolkats som '1' och tvärtom.
 -  osv.
 
+
 Frågor? Mejla croos.math@gmail.com
+
 Källkoden hittas här: https://github.com/croos90/mejllistorUHR
